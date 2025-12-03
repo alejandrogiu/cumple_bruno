@@ -211,11 +211,18 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
             margin-bottom: 80px;
-        
-            justify-items: center;   
-            justify-content: center; 
+            justify-items: center;     /* centra cada tarjeta */
+            justify-content: center;   /* centra el conjunto */
         }
 
+        .info-grid > .featured-card {
+            grid-column: 1 / -1;
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
 
         .info-card {
@@ -252,7 +259,7 @@
         }
 
         .info-card .icon {
-            font-size: 4rem;
+            font-size: 3rem;
             margin-bottom: 20px;
             display: block;
         }
@@ -276,8 +283,11 @@
         }
 
         .featured-card {
-            grid-column: auto;
-            max-width: 500px;   /* o lo que quieras */
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 700px;
             margin: 0 auto;
         }
 
@@ -545,6 +555,7 @@
         @media (max-width: 768px) {
             .hero-details {
                 gap: 20px;
+            .info-card {padding: 35px 25px;}
             }
 
             .detail-item {
