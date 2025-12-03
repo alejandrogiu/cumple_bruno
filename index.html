@@ -682,7 +682,11 @@
         <div class="form-container">
             <h2>Confirmá tu Asistencia</h2>
             
-            <form id="rsvpForm">
+            <form
+              id="rsvpForm"
+              action="https://formspree.io/f/xyzrjqdl"
+              method="POST"
+            >
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
                     <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre">
@@ -712,53 +716,29 @@
     </section>
 
     <script>
-        // Form handling
-        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const nombre = document.getElementById('nombre').value;
-            const apellido = document.getElementById('apellido').value;
-            const asistencia = document.getElementById('asistencia').value;
-            const asistenciaTexto = asistencia === 'si' ? 'SÍ VA A ASISTIR' : 'NO VA A ASISTIR';
-            
-            const subject = `Confirmación Pool Party Bruno - ${nombre} ${apellido}`;
-            const body = `
-CONFIRMACIÓN DE ASISTENCIA
-Pool Party - Cumpleaños de Bruno Giuffrida
-
-Nombre: ${nombre}
-Apellido: ${apellido}
-Asistencia: ${asistenciaTexto}
-
----
-Enviado desde la invitación web
-            `.trim();
-            
-            const mailtoLink = `mailto:alejandrogiu@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            
-            window.location.href = mailtoLink;
-            
+    document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+    
+        const form = e.target;
+    
+        const response = await fetch(form.action, {
+            method: form.method,
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+        });
+    
+        if (response.ok) {
             document.getElementById('successMessage').style.display = 'block';
-            
+            form.reset();
+    
             setTimeout(() => {
-                document.getElementById('rsvpForm').reset();
                 document.getElementById('successMessage').style.display = 'none';
             }, 5000);
-        });
-
-        // Smooth scroll
-        document.querySelector('.scroll-indicator')?.addEventListener('click', () => {
-            document.querySelector('.info-section').scrollIntoView({ behavior: 'smooth' });
-        });
-
-        // Parallax effect on scroll
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const floatElements = document.querySelectorAll('.float-element');
-            floatElements.forEach((el, index) => {
-                el.style.transform = `translateY(${scrolled * (0.1 + index * 0.05)}px)`;
-            });
-        });
+        } else {
+            alert("Hubo un problema enviando el formulario.");
+        }
+    });
     </script>
+
 </body>
 </html>
