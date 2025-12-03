@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bruno's Pool Party | 13 Diciembre 2024</title>
+    <title>Bruno's Pool Party | 13 Diciembre 2025</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
@@ -100,7 +100,53 @@
             animation: fadeInUp 1s ease 0.6s forwards;
             letter-spacing: 2px;
         }
+        
+        /* NEW: Countdown Timer Styles */
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: clamp(10px, 4vw, 30px);
+            margin: 40px 0;
+            padding: 20px 0;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.8s forwards;
+        }
 
+        .time-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: clamp(15px, 5vw, 25px);
+            width: clamp(70px, 15vw, 120px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .time-box:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        .time-box span {
+            font-size: clamp(1.8rem, 6vw, 4rem);
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        .time-box label {
+            font-size: clamp(0.6rem, 2vw, 0.9rem);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+        /* END: Countdown Timer Styles */
+        
         .hero-details {
             display: flex;
             justify-content: center;
@@ -211,8 +257,8 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
             margin-bottom: 80px;
-            justify-items: center;     /* centra cada tarjeta */
-            justify-content: center;   /* centra el conjunto */
+            justify-items: center;      /* centra cada tarjeta */
+            justify-content: center;    /* centra el conjunto */
         }
 
         .info-grid > .featured-card {
@@ -544,20 +590,16 @@
         }
 
         /* Responsive */
-            @media (max-width: 768px) {
+        @media (max-width: 768px) {
 
-                .hero-details {
-                    gap: 20px;
-                }
-            
-                .info-card {
-                    padding: 35px 25px;
-                }
-            
+            .hero-details {
+                gap: 20px;
             }
-
-
-
+            
+            .info-card {
+                padding: 35px 25px;
+            }
+            
             .detail-item {
                 padding: 20px 25px;
             }
@@ -582,18 +624,22 @@
     </style>
 </head>
 <body>
-    <!-- Floating Elements -->
     <div class="float-element" style="font-size: 60px;">🏊‍♂️</div>
     <div class="float-element" style="font-size: 50px;">🎉</div>
     <div class="float-element" style="font-size: 55px;">💦</div>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <div class="logo">Estás Invitado</div>
             <h1>BRUNO<br>CUMPLE 10</h1>
             <div class="subtitle">POOL PARTY EXPERIENCE</div>
             
+            <div class="countdown-timer">
+                <div class="time-box"><span id="days">00</span><label>DÍAS</label></div>
+                <div class="time-box"><span id="hours">00</span><label>HS</label></div>
+                <div class="time-box"><span id="minutes">00</span><label>MIN</label></div>
+                <div class="time-box"><span id="seconds">00</span><label>SEG</label></div>
+            </div>
             <div class="hero-details">
                 <div class="detail-item">
                     <span class="icon">🗓️</span>
@@ -618,7 +664,6 @@
         </div>
     </section>
 
-    <!-- Info Section -->
     <section class="info-section">
         <h2 class="section-title">Detalles del Evento</h2>
         
@@ -658,7 +703,6 @@
             </div>
         </div>
 
-        <!-- Important Box -->
         <div class="important-box">
             <h3>¡No olvides traer!</h3>
             <div class="important-list">
@@ -678,7 +722,6 @@
         </div>
     </section>
 
-    <!-- RSVP Section -->
     <section class="rsvp-section">
         <div class="form-container">
             <h2>Confirmá tu Asistencia</h2>
@@ -717,6 +760,41 @@
     </section>
 
     <script>
+    
+    const eventDate = new Date("December 13, 2025 15:00:00").getTime(); 
+
+    const countdown = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = eventDate - now;
+
+        // Cálculo de tiempo
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        // Función para añadir cero inicial si el número es menor a 10
+        const formatTime = (time) => String(time).padStart(2, '0');
+
+        // Mostrar el resultado en los elementos con id
+        document.getElementById("days").innerHTML = formatTime(days);
+        document.getElementById("hours").innerHTML = formatTime(hours);
+        document.getElementById("minutes").innerHTML = formatTime(minutes);
+        document.getElementById("seconds").innerHTML = formatTime(seconds);
+
+        // Si la cuenta regresiva termina
+        if (distance < 0) {
+            clearInterval(countdown);
+            document.getElementById("days").innerHTML = "🎉";
+            document.getElementById("hours").innerHTML = "FIE";
+            document.getElementById("minutes").innerHTML = "STA";
+            document.getElementById("seconds").innerHTML = "🎈";
+            document.querySelector('.subtitle').innerHTML = "¡LA FIESTA ES HOY! ¡A DISFRUTAR! 🥳";
+            // Opcional: Ocultar las etiquetas (DÍAS, HS, etc.)
+            document.querySelectorAll('.time-box label').forEach(label => label.style.display = 'none');
+        }
+    }, 1000);
+
     document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
         e.preventDefault();
     
